@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aikie Shop</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ── NOISE OVERLAY ── -->
+  <div class="noise"></div>
+
+  <!-- ── CURSOR ── -->
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-trail" id="cursorTrail"></div>
+
+  <!-- ════════════════════════════════
+       AUTH MODALS
+  ════════════════════════════════ -->
+  <div class="modal-backdrop" id="modalBackdrop">
+
+    <!-- LOGIN -->
+    <div class="modal" id="loginModal">
+      <button class="modal-close" onclick="closeModal()">✕</button>
+      <div class="modal-brand">AIKIE</div>
+      <h2 class="modal-title">Welcome back</h2>
+      <p class="modal-sub">Sign in to your account</p>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" placeholder="you@example.com" class="inp" />
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" placeholder="••••••••" class="inp" />
+      </div>
+      <div class="form-row">
+        <label class="check-wrap"><input type="checkbox" /><span>Remember me</span></label>
+        <a href="#" class="link-muted">Forgot password?</a>
+      </div>
+      <button class="btn-primary w100" onclick="handleLogin()">Sign In</button>
+      <p class="modal-footer-txt">Don't have an account?
+        <button class="link-accent" onclick="switchModal('signup')">Create one</button>
+      </p>
+    </div>
+
+    <!-- SIGN UP -->
+    <div class="modal hidden" id="signupModal">
+      <button class="modal-close" onclick="closeModal()">✕</button>
+      <div class="modal-brand">AIKIE</div>
+      <h2 class="modal-title">Join the shop</h2>
+      <p class="modal-sub">Create your free account</p>
+      <div class="form-row-2">
+        <div class="form-group">
+          <label>First Name</label>
+          <input type="text" placeholder="Jane" class="inp" />
+        </div>
+        <div class="form-group">
+          <label>Last Name</label>
+          <input type="text" placeholder="Doe" class="inp" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" placeholder="you@example.com" class="inp" />
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" placeholder="Min. 8 characters" class="inp" />
+      </div>
+      <button class="btn-primary w100" onclick="handleSignup()">Create Account</button>
+      <p class="modal-footer-txt">Already have an account?
+        <button class="link-accent" onclick="switchModal('login')">Sign in</button>
+      </p>
+    </div>
+
+    <!-- SUCCESS -->
+    <div class="modal modal-success hidden" id="successModal">
+      <div class="success-icon">✓</div>
+      <h2 class="modal-title">You're in!</h2>
+      <p class="modal-sub">Welcome to Aikie Shop.</p>
+      <button class="btn-primary w100" onclick="closeModal()">Start Shopping</button>
+    </div>
+
+  </div>
+
+  <!-- ════════════════════════════════
+       NAVBAR
+  ════════════════════════════════ -->
+  <header class="navbar" id="navbar">
+    <div class="nav-inner">
+      <a href="#" class="logo">AIKIE<span class="logo-dot">.</span></a>
+
+      <nav class="nav-links" id="navLinks">
+        <a href="#" class="nav-link active">Home</a>
+        <a href="#products" class="nav-link">Shop</a>
+        <a href="#categories" class="nav-link">Categories</a>
+        <a href="#deals" class="nav-link">Deals</a>
+      </nav>
+
+      <div class="nav-actions">
+        <button class="icon-btn" id="searchBtn" title="Search">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </button>
+        <button class="icon-btn cart-btn" onclick="toggleCart()" title="Cart">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+          <span class="cart-count" id="cartCount">0</span>
+        </button>
+        <button class="btn-ghost" onclick="openModal('login')">Log In</button>
+        <button class="btn-primary" onclick="openModal('signup')">Sign Up</button>
+        <button class="hamburger" id="hamburger" onclick="toggleMenu()">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Search Bar -->
+    <div class="search-bar" id="searchBar">
+      <input type="text" placeholder="Search products…" class="inp search-inp" id="searchInput" oninput="filterProducts()" />
+      <button class="icon-btn" onclick="closeSearch()">✕</button>
+    </div>
+  </header>
+
+  <!-- ════════════════════════════════
+       HERO
+  ════════════════════════════════ -->
+  <section class="hero">
+    <div class="hero-bg">
+      <div class="orb orb1"></div>
+      <div class="orb orb2"></div>
+      <div class="orb orb3"></div>
+      <div class="grid-lines"></div>
+    </div>
+    <div class="hero-content">
+      <div class="hero-tag">NEW SEASON DROP</div>
+      <h1 class="hero-title">SHOP<br /><em>WITHOUT</em><br />LIMITS</h1>
+      <p class="hero-desc">Curated products. Unbeatable prices.<br />Delivered to your door.</p>
+      <div class="hero-cta">
+        <button class="btn-primary btn-xl" onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})">Explore Now</button>
+        <button class="btn-outline btn-xl">Watch Lookbook</button>
+      </div>
+      <div class="hero-stats">
+        <div class="stat"><span class="stat-n">12K+</span><span class="stat-l">Products</span></div>
+        <div class="stat-divider"></div>
+        <div class="stat"><span class="stat-n">98%</span><span class="stat-l">Satisfaction</span></div>
+        <div class="stat-divider"></div>
+        <div class="stat"><span class="stat-n">Free</span><span class="stat-l">Shipping</span></div>
+      </div>
+    </div>
+    <div class="hero-scroll-hint">SCROLL<span class="scroll-line"></span></div>
+  </section>
+
+  <!-- ════════════════════════════════
+       TICKER TAPE
+  ════════════════════════════════ -->
+  <div class="ticker-wrap">
+    <div class="ticker">
+      <span>FREE SHIPPING OVER ₱1500</span><span class="ticker-dot">◆</span>
+      <span>NEW ARRIVALS WEEKLY</span><span class="ticker-dot">◆</span>
+      <span>30-DAY RETURNS</span><span class="ticker-dot">◆</span>
+      <span>EXCLUSIVE MEMBER DEALS</span><span class="ticker-dot">◆</span>
+      <span>FREE SHIPPING OVER ₱1500</span><span class="ticker-dot">◆</span>
+      <span>NEW ARRIVALS WEEKLY</span><span class="ticker-dot">◆</span>
+      <span>30-DAY RETURNS</span><span class="ticker-dot">◆</span>
+      <span>EXCLUSIVE MEMBER DEALS</span><span class="ticker-dot">◆</span>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════
+       CATEGORIES
+  ════════════════════════════════ -->
+  <section class="section" id="categories">
+    <div class="container">
+      <div class="section-header">
+        <p class="section-tag">BROWSE BY</p>
+        <h2 class="section-title">Categories</h2>
+      </div>
+      <div class="cat-grid">
+        <div class="cat-card cat-large" data-cat="Electronics" onclick="filterByCategory('Electronics')">
+          <div class="cat-bg cat-bg-1"></div>
+          <div class="cat-icon">⚡</div>
+          <div class="cat-info"><h3>Electronics</h3><span>420 items</span></div>
+        </div>
+        <div class="cat-card" data-cat="Fashion" onclick="filterByCategory('Fashion')">
+          <div class="cat-bg cat-bg-2"></div>
+          <div class="cat-icon">👗</div>
+          <div class="cat-info"><h3>Fashion</h3><span>310 items</span></div>
+        </div>
+        <div class="cat-card" data-cat="Home" onclick="filterByCategory('Home')">
+          <div class="cat-bg cat-bg-3"></div>
+          <div class="cat-icon">🏠</div>
+          <div class="cat-info"><h3>Home & Living</h3><span>195 items</span></div>
+        </div>
+        <div class="cat-card" data-cat="Beauty" onclick="filterByCategory('Beauty')">
+          <div class="cat-bg cat-bg-4"></div>
+          <div class="cat-icon">✨</div>
+          <div class="cat-info"><h3>Beauty</h3><span>280 items</span></div>
+        </div>
+        <div class="cat-card" data-cat="Sports" onclick="filterByCategory('Sports')">
+          <div class="cat-bg cat-bg-5"></div>
+          <div class="cat-icon">🏋️</div>
+          <div class="cat-info"><h3>Sports</h3><span>160 items</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════
+       PRODUCTS
+  ════════════════════════════════ -->
+  <section class="section" id="products">
+    <div class="container">
+      <div class="section-header">
+        <p class="section-tag">HANDPICKED</p>
+        <h2 class="section-title">Featured Products</h2>
+      </div>
+
+      <!-- Filters -->
+      <div class="filter-bar">
+        <button class="filter-btn active" onclick="filterByCategory('All')">All</button>
+        <button class="filter-btn" onclick="filterByCategory('Electronics')">Electronics</button>
+        <button class="filter-btn" onclick="filterByCategory('Fashion')">Fashion</button>
+        <button class="filter-btn" onclick="filterByCategory('Home')">Home</button>
+        <button class="filter-btn" onclick="filterByCategory('Beauty')">Beauty</button>
+        <button class="filter-btn" onclick="filterByCategory('Sports')">Sports</button>
+        <div class="filter-sort">
+          <select class="sort-sel" onchange="sortProducts(this.value)">
+            <option value="default">Sort: Default</option>
+            <option value="price-asc">Price: Low–High</option>
+            <option value="price-desc">Price: High–Low</option>
+            <option value="rating">Top Rated</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="product-grid" id="productGrid"></div>
+      <div class="no-results hidden" id="noResults">No products found.</div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════
+       DEALS BANNER
+  ════════════════════════════════ -->
+  <section class="deals-banner" id="deals">
+    <div class="deals-orb"></div>
+    <div class="deals-content">
+      <p class="deals-tag">LIMITED TIME</p>
+      <h2 class="deals-title">MEGA SALE</h2>
+      <p class="deals-sub">Up to <strong>70% OFF</strong> on selected items. Ends soon.</p>
+      <div class="countdown" id="countdown">
+        <div class="cd-block"><span id="cdH">08</span><small>HRS</small></div>
+        <div class="cd-colon">:</div>
+        <div class="cd-block"><span id="cdM">34</span><small>MIN</small></div>
+        <div class="cd-colon">:</div>
+        <div class="cd-block"><span id="cdS">12</span><small>SEC</small></div>
+      </div>
+      <button class="btn-primary btn-xl" onclick="filterByCategory('All')">Shop the Sale</button>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════
+       CART SIDEBAR
+  ════════════════════════════════ -->
+  <div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+  <aside class="cart-sidebar" id="cartSidebar">
+    <div class="cart-header">
+      <h3>Your Cart <span id="cartItemCount">(0)</span></h3>
+      <button class="icon-btn" onclick="toggleCart()">✕</button>
+    </div>
+    <div class="cart-items" id="cartItems">
+      <div class="cart-empty">
+        <div class="empty-icon">🛍️</div>
+        <p>Your cart is empty</p>
+        <button class="btn-ghost" onclick="toggleCart()">Continue Shopping</button>
+      </div>
+    </div>
+    <div class="cart-footer" id="cartFooter" style="display:none">
+      <div class="cart-total">
+        <span>Total</span>
+        <span id="cartTotal">₱0.00</span>
+      </div>
+      <button class="btn-primary w100" onclick="openModal('login')">Checkout</button>
+    </div>
+  </aside>
+
+  <!-- ════════════════════════════════
+       TOAST
+  ════════════════════════════════ -->
+  <div class="toast" id="toast"></div>
+
+  <!-- ════════════════════════════════
+       FOOTER
+  ════════════════════════════════ -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="logo">AIKIE<span class="logo-dot">.</span></div>
+          <p>Your everyday destination for premium products at unbeatable prices.</p>
+          <div class="socials">
+            <a href="#" class="social-btn">𝕏</a>
+            <a href="#" class="social-btn">in</a>
+            <a href="#" class="social-btn">ig</a>
+            <a href="#" class="social-btn">fb</a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>Shop</h4>
+          <a href="#">New Arrivals</a>
+          <a href="#">Best Sellers</a>
+          <a href="#">Sale</a>
+          <a href="#">Collections</a>
+        </div>
+        <div class="footer-col">
+          <h4>Help</h4>
+          <a href="#">Shipping Info</a>
+          <a href="#">Returns</a>
+          <a href="#">Track Order</a>
+          <a href="#">Contact Us</a>
+        </div>
+        <div class="footer-col">
+          <h4>Newsletter</h4>
+          <p>Stay updated with new drops.</p>
+          <div class="newsletter-form">
+            <input type="email" placeholder="Email address" class="inp" />
+            <button class="btn-primary">→</button>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2026 Aikie Shop. All rights reserved.</p>
+        <div class="footer-links">
+          <a href="#">Privacy</a><a href="#">Terms</a><a href="#">Cookies</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
